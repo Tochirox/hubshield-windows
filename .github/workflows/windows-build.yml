@@ -1,0 +1,31 @@
+name: Windows build
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run dist:win
+      - uses: actions/upload-artifact@v4
+        with:
+          name: HubShield-Windows
+          path: release/*.exe
+      - name: Publish GitHub Release assets
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = $env:GITHUB_REF_NAME
+          gh release create $tag release/HubShield-Setup.exe release/HubShield-Portable.exe --title "HubShield $tag" --notes "Première version de test de HubShield Windows."

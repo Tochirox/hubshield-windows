@@ -1,0 +1,8 @@
+{
+  "name": "hubshield-windows", "version": "0.1.0", "private": true,
+  "description": "HubShield Windows — navigateur de bureau", "author": "HubShield", "license": "UNLICENSED", "main": "dist-electron/main.js",
+  "scripts": {"dev":"node electron/dev-launcher.cjs","build":"tsc -b && vite build && tsc -p electron/tsconfig.json","preview":"vite preview","electron:dev":"node electron/dev-launcher.cjs","dist:win":"npm run build && electron-builder --config electron-builder.yml --win nsis portable --x64"},
+  "dependencies": {"lucide-react":"^0.468.0","react":"^18.3.1","react-dom":"^18.3.1"},
+  "devDependencies": {"@types/node":"^22.10.2","@types/react":"^18.3.18","@types/react-dom":"^18.3.5","@vitejs/plugin-react":"^6.2.1","electron":"45.2.3","electron-builder":"^26.18.0","typescript":"^5.7.2","vite":"^8.3.6"},
+  "build": {"appId":"com.hubshield.windows","productName":"HubShield","directories":{"output":"release","buildResources":"resources"},"files":["dist/**","dist-electron/**","package.json"],"asar":true,"win":{"icon":"resources/icons/hubshield.ico","target":[{"target":"nsis","arch":["x64"]},{"target":"portable","arch":["x64"]}],"artifactName":"HubShield-Setup.${ext}"},"nsis":{"oneClick":false,"allowToChangeInstallationDirectory":true,"createDesktopShortcut":true},"portable":{"artifactName":"HubShield-Portable.${ext}"}}
+}
